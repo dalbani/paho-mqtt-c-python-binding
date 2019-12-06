@@ -9,6 +9,44 @@ services:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
       - mosquitto-data:/mosquitto/data
 
+  paho-python-c-pub_alpine:
+    build:
+      context: paho-python-c
+      dockerfile: Dockerfile.alpine
+      args:
+        - HEAP_TRACKING=${HEAP_TRACKING}
+    depends_on:
+      - mosquitto
+    environment:
+      - MQTT_CLIENT_ID=paho-python-c-pub-async_alpine
+      - MQTT_SERVER_HOST=${MQTT_SERVER_HOST}
+      - MQTT_SERVER_PORT=${MQTT_SERVER_PORT}
+      - MQTT_KEEP_ALIVE=${MQTT_KEEP_ALIVE}
+      - MQTT_TOPIC=${MQTT_TOPIC}
+      - MQTT_QOS=${MQTT_QOS}
+      - MQTT_C_CLIENT_TRACE=${MQTT_C_CLIENT_TRACE}
+      - MQTT_C_CLIENT_TRACE_LEVEL=${MQTT_C_CLIENT_TRACE_LEVEL}
+    command: python -u pub.py
+
+  paho-python-c-pub_debian:
+    build:
+      context: paho-python-c
+      dockerfile: Dockerfile.debian
+      args:
+        - HEAP_TRACKING=${HEAP_TRACKING}
+    depends_on:
+      - mosquitto
+    environment:
+      - MQTT_CLIENT_ID=paho-python-c-pub-async_debian
+      - MQTT_SERVER_HOST=${MQTT_SERVER_HOST}
+      - MQTT_SERVER_PORT=${MQTT_SERVER_PORT}
+      - MQTT_KEEP_ALIVE=${MQTT_KEEP_ALIVE}
+      - MQTT_TOPIC=${MQTT_TOPIC}
+      - MQTT_QOS=${MQTT_QOS}
+      - MQTT_C_CLIENT_TRACE=${MQTT_C_CLIENT_TRACE}
+      - MQTT_C_CLIENT_TRACE_LEVEL=${MQTT_C_CLIENT_TRACE_LEVEL}
+    command: python -u pub.py
+
   paho-python-c-pub-async_alpine:
     build:
       context: paho-python-c
